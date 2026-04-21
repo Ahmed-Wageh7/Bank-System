@@ -8,9 +8,9 @@ import {
 } from "./database/connection.js";
 import router from "./module/bank/bank.controller.js";
 
-export async function bootstrap() {
-  validateConfig();
+let appInstance;
 
+function createApp() {
   const app = express();
 
   app.disable("x-powered-by");
@@ -32,7 +32,9 @@ export async function bootstrap() {
   app.use("/users", router);
 
   app.use((req, res) => {
-    res.status(404).json({ message: `Route ${req.method} ${req.originalUrl} not found` });
+    res
+      .status(404)
+      .json({ message: `Route ${req.method} ${req.originalUrl} not found` });
   });
 
   app.use((error, _req, res, _next) => {
@@ -40,8 +42,26 @@ export async function bootstrap() {
     res.status(500).json({ message: "Internal server error" });
   });
 
-  await connectToDatabase();
-  await initUserSchemaFields();
+  return app;
+}
+
+export async function getApp() {
+  validateConfig();
+
+  if (!appInstance) {
+    appInstance = createApp();
+  }
+
+  if (mongoose.connection.readyState !== 1) {
+    await connectToDatabase();
+    await initUserSchemaFields();
+  }
+
+  return appInstance;
+}
+
+export async function bootstrap() {
+  const app = await getApp();
 
   const server = app.listen(config.port, () => {
     console.log(`Express server is running on port ${config.port}`);

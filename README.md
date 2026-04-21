@@ -25,6 +25,21 @@ npm start
 - `MONGO_DB_NAME`: target database name
 - `NODE_ENV`: application environment
 
+## Vercel Deployment
+
+Set these environment variables in Vercel:
+
+- `MONGO_URI`
+- `MONGO_DB_NAME`
+- `NODE_ENV=production`
+
+After deployment, the API will be available directly from your domain:
+
+- `GET /health`
+- `POST /users`
+- `POST /users/login`
+- `GET /users`
+
 ## Endpoints
 
 - `GET /health`
