@@ -1,0 +1,18 @@
+{
+  "name": "node-js",
+  "version": "1.0.0",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --env-file=.env --watch src/main.js",
+    "start": "node --env-file=.env src/main.js",
+    "check": "node --check src/main.js && node --check src/app.controller.js && node --check src/database/connection.js && node --check src/database/Model/user.model.js && node --check src/module/bank/bank.service.js && node --check src/module/bank/bank.controller.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "ATM API built with Express and Mongoose",
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.2.4"
+  }
+}
